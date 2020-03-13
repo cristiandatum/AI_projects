@@ -7,9 +7,8 @@ column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
 unitlist = row_units + column_units + square_units
 
-# TODO: Update the unit list to add the new diagonal units
-unitlist = unitlist
-
+#Update the unit list to add the new diagonal units
+unitlist.append(['A1','B2','C3','D4','E5','F6','G7','H8','I9'])
 
 # Must be called after all units (including diagonals) are added to the unitlist
 units = extract_units(unitlist, boxes)
@@ -53,8 +52,18 @@ def naked_twins(values):
     Pseudocode for this algorithm on github:
     https://github.com/udacity/artificial-intelligence/blob/master/Projects/1_Sudoku/pseudocode.md
     """
-    # TODO: Implement this function!
-    raise NotImplementedError
+    for box in boxes:
+        print(box)
+    #   for box in values:
+    #     for each boxB of PEERS(boxA) do
+    #      if both values[boxA] and values[boxB] exactly match and have only two feasible digits do
+    #       for each peer of INTERSECTION(PEERS(boxA), PEERS(boxB)) do
+    #        for each digit of values[boxA] do
+    #         remove digit d from out[peer]
+    
+
+    new_sudoku = values.copy()
+    return new_sudoku
 
 
 def eliminate(values):
@@ -191,6 +200,7 @@ def solve(grid):
     """
     values = grid2values(grid)
     values = search(values)
+    values = naked_twins(values) #added line to call naked_twins
     return values
 
 
