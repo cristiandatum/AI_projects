@@ -52,15 +52,26 @@ def naked_twins(values):
     Pseudocode for this algorithm on github:
     https://github.com/udacity/artificial-intelligence/blob/master/Projects/1_Sudoku/pseudocode.md
     """
-    for box in boxes:
-        print(box)
-    #   for box in values:
-    #     for each boxB of PEERS(boxA) do
-    #      if both values[boxA] and values[boxB] exactly match and have only two feasible digits do
-    #       for each peer of INTERSECTION(PEERS(boxA), PEERS(boxB)) do
-    #        for each digit of values[boxA] do
-    #         remove digit d from out[peer]
-    
+    for boxA in values:
+        print (values[boxA])
+        
+        for boxB in peers[boxA]:
+            print ("  ",values[boxB])
+
+            if values[boxA]==values[boxB]:
+                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx')
+        
+
+#python -m unittest -v
+
+ 
+   
+#   if both values[boxA] and values[boxB] exactly match and have only two feasible digits do
+#    for each peer of INTERSECTION(PEERS(boxA), PEERS(boxB)) do
+#     for each digit of values[boxA] do
+#      remove digit d from out[peer]
+
+
 
     new_sudoku = values.copy()
     return new_sudoku
