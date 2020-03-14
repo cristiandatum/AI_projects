@@ -9,6 +9,7 @@ unitlist = row_units + column_units + square_units
 
 #Update the unit list to add the new diagonal units
 unitlist.append(['A1','B2','C3','D4','E5','F6','G7','H8','I9'])
+unitlist.append(['I1','H2','G3','F4','E5','D6','C7','B8','A9'])
 
 # Must be called after all units (including diagonals) are added to the unitlist
 units = extract_units(unitlist, boxes)
@@ -154,6 +155,7 @@ def reduce_puzzle(values):
             return False
     
     values = naked_twins(values)
+
     return values
 
 
