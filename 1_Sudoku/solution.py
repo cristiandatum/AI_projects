@@ -51,30 +51,30 @@ def naked_twins(values):
     --------
     Pseudocode for this algorithm on github:
     https://github.com/udacity/artificial-intelligence/blob/master/Projects/1_Sudoku/pseudocode.md
-    """
-    for boxA in values:
-        print (values[boxA])
-        
+    """    
+    new_values=values.copy()
+    
+    for boxA in new_values:
+
         for boxB in peers[boxA]:
-            print ("  ",values[boxB])
 
-            if values[boxA]==values[boxB]:
-                print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx')
-        
+            if new_values[boxA]==new_values[boxB] and len(new_values[boxA])==2:
+                
+                intersect=peers[boxA]&peers[boxB]
 
-#python -m unittest -v
+                for peer in intersect:
+                    
+                    if new_values[boxA][0] in new_values[peer]:
 
- 
-   
-#   if both values[boxA] and values[boxB] exactly match and have only two feasible digits do
-#    for each peer of INTERSECTION(PEERS(boxA), PEERS(boxB)) do
-#     for each digit of values[boxA] do
-#      remove digit d from out[peer]
+                        new_values[peer]=new_values[peer].replace(new_values[boxA][0],'')
+
+                        
+                    elif new_values[boxA][1] in new_values[peer]:
+
+                        new_values[peer]=new_values[peer].replace(new_values[boxA][1],'')
 
 
-
-    new_sudoku = values.copy()
-    return new_sudoku
+    return new_values
 
 
 def eliminate(values):
@@ -152,6 +152,8 @@ def reduce_puzzle(values):
         stalled = solved_values_before == solved_values_after
         if len([box for box in values.keys() if len(values[box]) == 0]):
             return False
+    
+    values = naked_twins(values)
     return values
 
 
@@ -211,8 +213,12 @@ def solve(grid):
     """
     values = grid2values(grid)
     values = search(values)
-    values = naked_twins(values) #added line to call naked_twins
     return values
+
+#my test codes...
+#diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+#result = solve(diag_sudoku_grid)
+#display(result)
 
 
 if __name__ == "__main__":
