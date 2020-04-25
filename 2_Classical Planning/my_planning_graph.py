@@ -8,6 +8,16 @@ from layers import BaseActionLayer, BaseLiteralLayer, makeNoOp, make_node
 
 class ActionLayer(BaseActionLayer):
 
+    
+    def test_parents(self):
+        """method added to verify that the parent nodes of each literal L in the 
+        layer are actions that have L as an effect.
+        for literal in self:
+            assert all(literal in action.effects for action in self.children[literal])
+
+            for action in self.parents[literal]:
+                print(action)
+
     def _inconsistent_effects(self, actionA, actionB):
         """ Return True if an effect of one action negates an effect of the other
 
@@ -19,9 +29,10 @@ class ActionLayer(BaseActionLayer):
         --------
         layers.ActionNode
         """
-        # TODO: implement this function
-        raise NotImplementedError
+        # TODO: implemgit ent this function
 
+        print(actionA)
+        return True
 
     def _interference(self, actionA, actionB):
         """ Return True if the effects of either action negate the preconditions of the other 
@@ -52,6 +63,8 @@ class ActionLayer(BaseActionLayer):
         # TODO: implement this function
         raise NotImplementedError
 
+
+print(dir(BaseActionLayer))
 
 class LiteralLayer(BaseLiteralLayer):
 
