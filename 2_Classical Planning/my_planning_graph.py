@@ -8,63 +8,66 @@ from layers import BaseActionLayer, BaseLiteralLayer, makeNoOp, make_node
 
 class ActionLayer(BaseActionLayer):
 
-    
-    def test_parents(self):
-        """method added to verify that the parent nodes of each literal L in the 
-        layer are actions that have L as an effect.
-        for literal in self:
-            assert all(literal in action.effects for action in self.children[literal])
-
-            for action in self.parents[literal]:
-                print(action)
-
     def _inconsistent_effects(self, actionA, actionB):
         """ Return True if an effect of one action negates an effect of the other
 
         Hints:
             (1) `~Literal` can be used to logically negate a literal
-            (2) `self.children` contains a map from actions to effects
+            (2) `self.children` contains a map from actions to effects (actions: effects)
 
         See Also
         --------
         layers.ActionNode
+        
+        effects : set()
+        A set of mixed positive and negative literal aimacode.utils.Expr
+        expressions (symbolic representations like X, ~Y, etc.) that are
+        results of applying this action
         """
-        # TODO: implemgit ent this function
+        for actionA in actionA.effects:
 
-        print(actionA)
-        return True
+            if ~actionA in actionB.effects:
+                return True
+
+        return False
 
     def _interference(self, actionA, actionB):
         """ Return True if the effects of either action negate the preconditions of the other 
 
         Hints:
             (1) `~Literal` can be used to logically negate a literal
-            (2) `self.parents` contains a map from actions to preconditions
+            (2) `self.parents` contains a map from actions to preconditions (actions: preconditions)
         
         See Also
         --------
         layers.ActionNode
         """
-        # TODO: implement this function
-        raise NotImplementedError
+        for actionA in actionA.effects:
+            
+            if ~actionA in actionB.preconditions:
+                return True
+  
+        return False
 
     def _competing_needs(self, actionA, actionB):
         """ Return True if any preconditions of the two actions are pairwise mutex in the parent layer
 
         Hints:
             (1) `self.parent_layer` contains a reference to the previous literal layer
-            (2) `self.parents` contains a map from actions to preconditions
+            (2) `self.parents` contains a map from actions to preconditions (actions: preconditions)
         
         See Also
         --------
         layers.ActionNode
         layers.BaseLayer.parent_layer
         """
-        # TODO: implement this function
-        raise NotImplementedError
 
+        for preconditionA in actionA.preconditions:
+            for preconditionB in actionB.preconditions:
+                if(self.parent_layer.is_mutex(preconditionA,preconditionB)):
+                    return True
 
-print(dir(BaseActionLayer))
+        return False
 
 class LiteralLayer(BaseLiteralLayer):
 
