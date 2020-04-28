@@ -64,5 +64,3 @@ class Action:
         # add positive literals
         for clause in self.effect_add:
             kb.tell(self.substitute(clause, args))
-
-print(dir(Action))

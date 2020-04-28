@@ -23,11 +23,29 @@ class ActionLayer(BaseActionLayer):
         A set of mixed positive and negative literal aimacode.utils.Expr
         expressions (symbolic representations like X, ~Y, etc.) that are
         results of applying this action
-        """
-        for actionA in actionA.effects:
 
-            if ~actionA in actionB.effects:
-                return True
+        Example:
+        precond_pos = [expr("Human(person)"), expr("Hungry(Person)")]
+        precond_neg = [expr("Eaten(food)")]
+        effect_add = [expr("Eaten(food)")]
+        effect_rem = [expr("Hungry(person)")]
+        eat = Action(expr("Eat(person, food)"), [precond_pos, precond_neg], [effect_add, effect_rem])
+
+        op is a str like '+' or 'sin'; args are Expressions.
+        Expr('x') or Symbol('x') creates a symbol (a nullary Expr).
+        Expr('-', x) creates a unary; Expr('+', x, 1) creates a binary.
+
+        """
+        for effectA in actionA.effects:
+
+                if (~effectA in actionB.effects):
+                    return True
+
+        for effectB in actionB.effects:
+
+                if (~effectB in actionA.effects):
+                    return True
+
 
         return False
 
@@ -42,11 +60,16 @@ class ActionLayer(BaseActionLayer):
         --------
         layers.ActionNode
         """
-        for actionA in actionA.effects:
-            
-            if ~actionA in actionB.preconditions:
-                return False#changed
-  
+        for effectA in actionA.effects:
+
+            if (~effectA in actionB.preconditions):
+                return True
+
+        for effectB in actionB.effects:
+
+            if (~effectB in actionA.preconditions):
+                return True
+
         return False
 
     def _competing_needs(self, actionA, actionB):
@@ -64,8 +87,9 @@ class ActionLayer(BaseActionLayer):
 
         for preconditionA in actionA.preconditions:
             for preconditionB in actionB.preconditions:
+
                 if(self.parent_layer.is_mutex(preconditionA,preconditionB)):
-                    return False#changed
+                    return True
 
         return False
 
