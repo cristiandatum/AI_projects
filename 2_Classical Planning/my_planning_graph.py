@@ -106,14 +106,22 @@ class LiteralLayer(BaseLiteralLayer):
         --------
         layers.BaseLayer.parent_layer
         """
-        # TODO: implement this function
-        return True #changed to remote error
+        mutex = True
+        for layerA in self.parents[literalA]:
+            for layerB in self.parents[literalB]:
+                if self.parent_layer.is_mutex(layerA, layerB) == True:
+                    mutex=True
+                else:
+                    mutex=False
+        return mutex
 
     def _negation(self, literalA, literalB):
         """ Return True if two literals are negations of each other """
-        # TODO: implement this function
-        return True #changed to remove error
+        
+        if (literalA == ~literalB):
+            return True
 
+        return False
 
 class PlanningGraph:
     def __init__(self, problem, state, serialize=True, ignore_mutexes=False):
