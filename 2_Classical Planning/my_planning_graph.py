@@ -158,6 +158,22 @@ class PlanningGraph:
         self.literal_layers = [layer]
         self.action_layers = []
 
+    def level_cost(self,goal):
+        """ Helper function for MaxLevel and LevelSum
+        inputs:
+            graph, a leveled planning graph
+            goal, a literal that is a goal in the planning graph
+        returns:
+            "i" being the cost of layer_i where the goal exists.
+    
+        """
+#        for each layeri in graph.literalLayers do
+#            if goal in layeri then return i:
+
+        for layer_i in self.literal_layers:
+            if goal in layer_i:
+                return layer_i[0]
+
     def h_levelsum(self):
         """ Calculate the level sum heuristic for the planning graph
 
@@ -183,8 +199,19 @@ class PlanningGraph:
         --------
         Russell-Norvig 10.3.1 (3rd Edition)
         """
-        # TODO: implement this function
-        raise NotImplementedError
+        #The level cost of a goal is equal to the level number of the first 
+        # literal layer in the planning graph where the goal literal appears.
+        
+        # The level_cost is a helper function used by h_levelsum.
+        
+        self.fill()
+        costs=[]
+
+        for goal in self.goal:
+            costs.append(self.level_cost(goal))
+        print (costs)
+        return sum(costs)
+
 
     def h_maxlevel(self):
         """ Calculate the max level heuristic for the planning graph
@@ -213,8 +240,7 @@ class PlanningGraph:
         -----
         WARNING: you should expect long runtimes using this heuristic with A*
         """
-        # TODO: implement maxlevel heuristic
-        raise NotImplementedError
+        return True
 
     def h_setlevel(self):
         """ Calculate the set level heuristic for the planning graph
@@ -240,6 +266,8 @@ class PlanningGraph:
         """
         # TODO: implement setlevel heuristic
         raise NotImplementedError
+
+
 
     ##############################################################################
     #                     DO NOT MODIFY CODE BELOW THIS LINE                     #
