@@ -268,28 +268,9 @@ class PlanningGraph:
         Notes
         -----
         WARNING: you should expect long runtimes using this heuristic on complex problems
-        """
-        '''
-        function SetLevel(graph) returns a value
-         inputs:
-          graph, an initialized (unleveled) planning graph
-
-         graph.fill() /* fill the planning graph until it levels off */
-         for layeri in graph.literalLayers do
-          allGoalsMet <- true
-          for each goal in graph.goalLiterals do
-           if goal not in layeri then allGoalsMet <- false
-          if not allGoalsMet then continue
-
-          goalsAreMutex <- false
-          for each goalA in graph.goalLiterals do
-           for each goalB in graph.goalLiterals do
-            if layeri.isMutex(goalA, goalB) then goalsAreMutex <- true
-          if not goalsAreMutex then return i
-        '''
+        """        
         self.fill() 
         all_goals_met = False #False when all goals are not met
-
         for level,layer in enumerate(self.literal_layers):
             for goal in self.goal:
                 if goal not in layer:
@@ -306,7 +287,6 @@ class PlanningGraph:
                             mutex_goals =True
                 if mutex_goals==False:
                     return level
-
 
     ##############################################################################
     #                     DO NOT MODIFY CODE BELOW THIS LINE                     #
