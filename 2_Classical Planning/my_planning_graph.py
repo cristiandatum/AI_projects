@@ -288,14 +288,16 @@ class PlanningGraph:
           if not goalsAreMutex then return i
         '''
         self.fill() 
-        flag = True #False when all goals are not met
-        
-        for level,layer in enumerate(self.literal_layers):
-            for goal in layer:
-                if goal not in layer:
-                    flag=False
+        all_goals_met = False #False when all goals are not met
 
-            if flag==False:
+        for level,layer in enumerate(self.literal_layers):
+            for goal in self.goal:
+                if goal not in layer:
+                    all_goals_met=False
+
+            if all_goals_met == False:
+                continue
+
                 mutex_goals=False
 
                 for goalA in self.goal:
