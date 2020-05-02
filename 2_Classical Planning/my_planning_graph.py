@@ -164,15 +164,14 @@ class PlanningGraph:
             graph, a leveled planning graph
             goal, a literal that is a goal in the planning graph
         returns:
-            "i" being the cost of layer_i where the goal exists.
+            "level" being the cost of layer where the goal exists.
     
         """
-#        for each layeri in graph.literalLayers do
-#            if goal in layeri then return i:
 
-        for layer_i in self.literal_layers:
-            if goal in layer_i:
-                return layer_i[0]
+        for level, layer in enumerate(self.literal_layers):
+            if goal in layer:
+                return level
+
 
     def h_levelsum(self):
         """ Calculate the level sum heuristic for the planning graph
@@ -209,7 +208,6 @@ class PlanningGraph:
 
         for goal in self.goal:
             costs.append(self.level_cost(goal))
-        print (costs)
         return sum(costs)
 
 
@@ -240,7 +238,14 @@ class PlanningGraph:
         -----
         WARNING: you should expect long runtimes using this heuristic with A*
         """
-        return True
+
+        self.fill() # fill planning graph until it levels off
+        costs=[]
+
+        for goal in self.goal:
+            costs.append(self.level_cost(goal))
+        return max(costs)
+
 
     def h_setlevel(self):
         """ Calculate the set level heuristic for the planning graph
@@ -264,9 +269,41 @@ class PlanningGraph:
         -----
         WARNING: you should expect long runtimes using this heuristic on complex problems
         """
-        # TODO: implement setlevel heuristic
-        raise NotImplementedError
+        '''
+        function SetLevel(graph) returns a value
+         inputs:
+          graph, an initialized (unleveled) planning graph
 
+         graph.fill() /* fill the planning graph until it levels off */
+         for layeri in graph.literalLayers do
+          allGoalsMet <- true
+          for each goal in graph.goalLiterals do
+           if goal not in layeri then allGoalsMet <- false
+          if not allGoalsMet then continue
+
+          goalsAreMutex <- false
+          for each goalA in graph.goalLiterals do
+           for each goalB in graph.goalLiterals do
+            if layeri.isMutex(goalA, goalB) then goalsAreMutex <- true
+          if not goalsAreMutex then return i
+        '''
+        self.fill() 
+        flag = True #False when all goals are not met
+        
+        for level,layer in enumerate(self.literal_layers):
+            for goal in layer:
+                if goal not in layer:
+                    flag=False
+
+            if flag==False:
+                mutex_goals=False
+
+                for goalA in self.goal:
+                    for goalB in self.goal:
+                        if layer.is_mutex(goalA,goalB):
+                            mutex_goals =True
+                if mutex_goals==False:
+                    return level
 
 
     ##############################################################################
