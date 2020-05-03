@@ -109,11 +109,14 @@ class LiteralLayer(BaseLiteralLayer):
         mutex = True
         for layerA in self.parents[literalA]:
             for layerB in self.parents[literalB]:
-                if self.parent_layer.is_mutex(layerA, layerB) == True:
-                    mutex=True
-                else:
+                if self.parent_layer.is_mutex(layerA, layerB) == False:
                     mutex=False
+                    break
+            if mutex == False:
+                break
         return mutex
+
+
 
     def _negation(self, literalA, literalB):
         """ Return True if two literals are negations of each other """
