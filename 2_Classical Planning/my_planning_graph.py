@@ -270,23 +270,26 @@ class PlanningGraph:
         WARNING: you should expect long runtimes using this heuristic on complex problems
         """        
         self.fill() 
-        all_goals_met = False #False when all goals are not met
         for level,layer in enumerate(self.literal_layers):
+            all_goals_met=True #
             for goal in self.goal:
                 if goal not in layer:
                     all_goals_met=False
+                    break
 
-            if all_goals_met == False:
-                continue
+            if not all_goals_met: continue
 
-                mutex_goals=False
+            mutex_goals=False
 
-                for goalA in self.goal:
-                    for goalB in self.goal:
-                        if layer.is_mutex(goalA,goalB):
-                            mutex_goals =True
-                if mutex_goals==False:
-                    return level
+            for goalA in self.goal:
+                for goalB in self.goal:
+                    if layer.is_mutex(goalA,goalB):
+                        mutex_goals =True
+                        break
+            if mutex_goals==False:
+                return level
+
+        return -1
 
     ##############################################################################
     #                     DO NOT MODIFY CODE BELOW THIS LINE                     #
