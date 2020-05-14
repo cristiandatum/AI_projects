@@ -1,6 +1,22 @@
 
+import pickle
+from isolation import Isolation
 from sample_players import DataPlayer
 
+for play in range(10):
+    state = Isolation()
+    my_data = {state: 57}  # opening book always chooses the middle square on an open board
+    pickle_out = open('data.pickle', 'wb')
+    pickle.dump(my_data,pickle_out)
+    
+pickle_out.close()
+
+
+pickle_in=open('data.pickle','rb')
+example=pickle.load(pickle_in)    
+
+print(example)
+print(DataPlayer)
 
 class CustomPlayer(DataPlayer):
     """ Implement your own agent to play knight's Isolation
@@ -44,3 +60,23 @@ class CustomPlayer(DataPlayer):
         #          (the timer is automatically managed for you)
         import random
         self.queue.put(random.choice(state.actions()))
+
+        def _minimax(self, state, depth):
+
+            def _min_value(state, depth):
+                if state.terminal_test(): return state.utility(self.player_id)
+                if depth <= 0: return self.score(state)
+                value = float("inf")
+                for action in state.actions():
+                    value = min(value, _max_value(state.result(action), depth - 1))
+                return value
+
+            def _max_value(state, depth):
+                if state.terminal_test(): return state.utility(self.player_id)
+                if depth <= 0: return self.score(state)
+                value = float("-inf")
+                for action in state.actions():
+                    value = max(value, _min_value(state.result(action), depth - 1))
+                return value
+
+            return max(state.actions(), key=lambda x: _min_value(state.result(x), depth - 1))
