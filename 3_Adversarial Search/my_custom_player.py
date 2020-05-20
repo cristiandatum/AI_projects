@@ -19,13 +19,6 @@ class CustomPlayer(DataPlayer):
       any pickleable object to the self.context attribute.
     **********************************************************************
     """
-    def __init__(self, player_id):
-        self.player_id = player_id
-        self.timer = None
-        self.queue = None
-        self.context = None
-        self.data = None
-
     def get_action(self, state):
         """ Choose an action available in the current state
 
@@ -47,21 +40,9 @@ class CustomPlayer(DataPlayer):
         if state.ply_count < 2:
             self.queue.put(random.choice(state.actions()))
         else:
-            self.queue.put(self.alpha_beta_search(state, depth=3))
+            self.queue.put(self.alpha_beta_search(state, depth=4))
 
     def alpha_beta_search(self, state, depth):
-
-        alpha=float("-inf")
-        beta=float("inf")
-        best_score=float("-inf")
-        best_move=None # unused variable
-        for a in state.actions():
-            v=_min_value(state.result(a),alpha,beta,depth-1)
-            alpha=max(alpha,v)
-            if v>best_score:
-                best_score=v
-                best_move=a # how to feed this into _min:?
-#        return best_move # commented this out
 
         def _min_value(state, alpha,beta,depth):
             if state.terminal_test(): return state.utility(self.player_id)
@@ -86,7 +67,18 @@ class CustomPlayer(DataPlayer):
                 beta=min(beta,v)
             return v
 
-        return max(state.actions(), key=lambda x: _min_value(state.result(x), alpha,beta,depth - 1))
+        alpha=float("-inf")
+        beta=float("inf")
+        best_score=float("-inf")
+        best_move=None # unused variable
+
+        for a in state.actions():
+            v=_min_value(state.result(a),alpha,beta,depth)
+            alpha=max(alpha,v)
+            if v>best_score:
+                best_score=v
+                best_move=a
+        return best_move
 
     def score(self, state):
         own_loc = state.locs[self.player_id]
