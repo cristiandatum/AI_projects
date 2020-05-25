@@ -72,14 +72,31 @@ class CustomPlayer(DataPlayer):
             self.queue.put(my_move_1)
 
         #progressively go deeper as the number of state options is reduced.    
-        elif state.ply_count >65:
-            self.queue.put(self.alpha_beta_search(state, depth=5))
+#        elif state.ply_count >65:
+#            self.queue.put(self.alpha_beta_search(state, depth=5))
 
-        elif state.ply_count >50 and state.ply_count<=65:
-            self.queue.put(self.alpha_beta_search(state, depth=4))
+#        elif state.ply_count >50 and state.ply_count<=65:
+#            self.queue.put(self.alpha_beta_search(state, depth=4))
 
+#        else:
+#            self.queue.put(self.alpha_beta_search(state, depth=3))
+      
         else:
-            self.queue.put(self.alpha_beta_search(state, depth=3))
+            if state.ply_count >65:
+                depth_limit=5
+
+            elif state.ply_count >50 and state.ply_count<=65:
+                depth_limit=5
+
+            elif state.ply_count >1 and state.ply_count<=50:
+                depth_limit=4    
+
+            d = 1
+            while(True):
+                for d in range(1,depth_limit,1):
+                    print(d)
+                    self.queue.put(self.alpha_beta_search(state, depth_limit))
+        #        d += 1
 
     def alpha_beta_search(self, state, depth):
 
@@ -103,14 +120,13 @@ class CustomPlayer(DataPlayer):
                 v = max(v, _min_value(state.result(a), alpha,beta,depth - 1))
                 if v>=beta:
                     return v
-                beta=min(beta,v)
+                alpha=max(alpha,v)
             return v
 
         alpha=float("-inf")
         beta=float("inf")
         best_score=float("-inf")
         best_move=None 
-
         for a in state.actions():
             v=_min_value(state.result(a),alpha,beta,depth)
             alpha=max(alpha,v)
