@@ -1,5 +1,5 @@
 from isolation import Isolation
-from isolation import DebugState #me added
+from isolation import DebugState
 from sample_players import DataPlayer
 import random
 
@@ -117,7 +117,6 @@ class CustomPlayer(DataPlayer):
             if v>best_score:
                 best_score=v
                 best_move=a
-
         return best_move
 
     def score(self, state):
