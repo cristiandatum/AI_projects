@@ -114,7 +114,7 @@ class CustomPlayer(DataPlayer):
         for a in state.actions():
             v=_min_value(state.result(a),alpha,beta,depth)
             alpha=max(alpha,v)
-            if v>best_score:
+            if v>=best_score:
                 best_score=v
                 best_move=a
         return best_move
