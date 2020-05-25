@@ -67,7 +67,6 @@ class CustomPlayer(DataPlayer):
 
             #gives the used square
             opp_move_1= list(set(all_actions)^set(state.actions()))
-            print(opp_move_1)
             my_move_1=move_map[opp_move_1[0]]
             
             self.queue.put(my_move_1)
