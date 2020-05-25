@@ -54,7 +54,7 @@ class CustomPlayer(DataPlayer):
 #            self.queue.put(random.choice(state.actions()))
 #            state.actions()
 #            select the middle square in 11 x 9 board
-            self.queue.put(57)
+            self.queue.put(5) #changed from 57 (center board)
 
         #my_custom_player moves second:
         elif state.ply_count ==1:
@@ -67,24 +67,37 @@ class CustomPlayer(DataPlayer):
 
             #gives the used square
             opp_move_1= list(set(all_actions)^set(state.actions()))
-            
-            #if opponent 1st move is in a
-            if opp_move_1 == 0:
+            print(opp_move_1)
+            #if opponent 1st move is in a corner box
+            if opp_move_1[0] == 0: #black corner
                 my_move_1 = 14
-            elif opp_move_1==10:
+            elif opp_move_1[0]==10: #black corner
                 my_move_1 = 22
-            elif opp_move_1==104:
+            elif opp_move_1[0]==104: #black corner
                 my_move_1=92
-            elif opp_move_1==114:
+            elif opp_move_1[0]==114: #black corner
                 my_move_1=100
-
-            #find location of 1st opponent move and add +2 so it lies in the 
-            #same coloured square
-           
-            my_move_1= all_actions[all_actions.index((opp_move_1[0])+2)]
+            elif opp_move_1[0]==1 or opp_move_1[0]==13: #white corner
+                my_move_1=15
+            elif opp_move_1[0]==9 or opp_move_1[0]==23:  #white corner
+                my_move_1=21
+            elif opp_move_1[0]==91 or opp_move_1[0]==105:  #white corner
+                my_move_1=79
+            elif opp_move_1[0]==101 or opp_move_1[0]==113:  #white corner
+                my_move_1=99
+            else:
+                #find location of 1st opponent move and add +2 so it lies in the 
+                #different coloured square
+                my_move_1= all_actions[all_actions.index((opp_move_1[0]))+2]
+            
+#            print('my move', my_move_1)
             self.queue.put(my_move_1)
 
-        elif state.ply_count >60:
+        #progressively go deeper as the number of state options is reduced.    
+        elif state.ply_count >65:
+            self.queue.put(self.alpha_beta_search(state, depth=4))
+
+        elif state.ply_count >50 and state.ply_count<=65:
             self.queue.put(self.alpha_beta_search(state, depth=4))
 
         else:
