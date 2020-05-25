@@ -36,25 +36,12 @@ class CustomPlayer(DataPlayer):
         **********************************************************************
         """
         # randomly select a move as player 1 or 2 on an empty board, otherwise
-        # return the optimal alpha_beta minimax search move at a fixed search 
+        # return the optimal alpha_beta minimax search move at a search 
         # depth of 4 plies using minimax with alpha-beta pruning.
         
-        #print(state.ply_count) #added me
-
-#        debug_board = DebugState.from_state(state) #me added
-#        print(debug_board) #me added
-#        print(state.actions()) #me added
-
         #my_custom_player moves first:
         if state.ply_count ==0:
-#            print ("this is my ply_count:", state.ply_count)
-#            print(state.actions())
-#            debug_board=DebugState.from_state(state)
-#            print(debug_board)
-#            self.queue.put(random.choice(state.actions()))
-#            state.actions()
-#            select the middle square in 11 x 9 board
-            self.queue.put(5) #changed from 57 (center board)
+            self.queue.put(1)
 
         #my_custom_player moves second:
         elif state.ply_count ==1:
@@ -65,43 +52,35 @@ class CustomPlayer(DataPlayer):
             80, 81, 82, 83, 84, 85, 86, 87, 88, 91, 92, 93, 94, 95, 96, 97, 98, 
             99, 100, 101, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
 
+            #map to use against opponent's first move:
+            move_map={
+            0:14,	1:15,	2:16,	3:15,	4:18,	5:17,	6:18,	7:19,	8:20,	9:21,	10:22,
+            13:27,	14:28,	15:29,	16:28,	17:31,	18:30,	19:31,	20:32,	21:33,	22:34,	23:35,
+            26:14,	27:41,	28:42,	29:43,	30:44,	31:45,	32:46,	33:45,	34:46,	35:47,	36:22,
+            39:53,	40:54,	41:55,	42:56,	43:57,	44:56,	45:57,	46:58,	47:59,	48:60,	49:61,
+            52:40,	53:67,	54:42,	55:69,	56:70,	57:71,	58:70,	59:71,	60:46,	61:47,	62:48,
+            65:53,	66:54,	67:55,	68:56,	69:57,	70:84,	71:85,	72:58,	73:59,	74:60,	75:61,
+            78:66,	79:67,	80:68,	81:69,	82:70,	83:69,	84:70,	85:71,	86:72,	87:73,	88:74,
+            91:79,	92:80,	93:81,	94:82,	95:83,	96:82,	97:83,	98:84,	99:85,	100:86,	101:87,
+            104:92,	105:93,	106:94,	107:95,	108:96,	109:97,	110:98,	111:97,	112:98,	113:99,	114:100
+            }
+
             #gives the used square
             opp_move_1= list(set(all_actions)^set(state.actions()))
             print(opp_move_1)
-            #if opponent 1st move is in a corner box
-            if opp_move_1[0] == 0: #black corner
-                my_move_1 = 14
-            elif opp_move_1[0]==10: #black corner
-                my_move_1 = 22
-            elif opp_move_1[0]==104: #black corner
-                my_move_1=92
-            elif opp_move_1[0]==114: #black corner
-                my_move_1=100
-            elif opp_move_1[0]==1 or opp_move_1[0]==13: #white corner
-                my_move_1=15
-            elif opp_move_1[0]==9 or opp_move_1[0]==23:  #white corner
-                my_move_1=21
-            elif opp_move_1[0]==91 or opp_move_1[0]==105:  #white corner
-                my_move_1=79
-            elif opp_move_1[0]==101 or opp_move_1[0]==113:  #white corner
-                my_move_1=99
-            else:
-                #find location of 1st opponent move and add +2 so it lies in the 
-                #different coloured square
-                my_move_1= all_actions[all_actions.index((opp_move_1[0]))+2]
+            my_move_1=move_map[opp_move_1[0]]
             
-#            print('my move', my_move_1)
             self.queue.put(my_move_1)
 
         #progressively go deeper as the number of state options is reduced.    
         elif state.ply_count >65:
-            self.queue.put(self.alpha_beta_search(state, depth=4))
+            self.queue.put(self.alpha_beta_search(state, depth=5))
 
         elif state.ply_count >50 and state.ply_count<=65:
             self.queue.put(self.alpha_beta_search(state, depth=4))
 
         else:
-            self.queue.put(self.alpha_beta_search(state, depth=4))
+            self.queue.put(self.alpha_beta_search(state, depth=3))
 
     def alpha_beta_search(self, state, depth):
 
@@ -131,7 +110,7 @@ class CustomPlayer(DataPlayer):
         alpha=float("-inf")
         beta=float("inf")
         best_score=float("-inf")
-        best_move=None # unused variable
+        best_move=None 
 
         for a in state.actions():
             v=_min_value(state.result(a),alpha,beta,depth)
@@ -140,11 +119,6 @@ class CustomPlayer(DataPlayer):
                 best_score=v
                 best_move=a
 
-#        board = Isolation() #me added
-#        debug_board = DebugState.from_state(board) #me added
-#        print(debug_board.bitboard_string) #me added
-        
-#        print(best_move)
         return best_move
 
     def score(self, state):
