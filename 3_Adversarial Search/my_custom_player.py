@@ -36,21 +36,24 @@ class CustomPlayer(DataPlayer):
         **********************************************************************
         """
         # randomly select a move as player 1 or 2 on an empty board, otherwise
-        # return the optimal alpha_beta minimax search move at a search 
-        # depth of 4 plies using minimax with alpha-beta pruning.
+        # return the optimal alpha_beta minimax search move at a variable 
+        # depth plies using minimax with alpha-beta pruning and first best move.
         
         #my_custom_player moves first:
-        if state.ply_count ==0:
-            self.queue.put(1)
+        if state.ply_count < 2:
+            self.queue.put(random.choice(state.actions()))
+
+ #       if state.ply_count ==0:
+ #           self.queue.put(1)
 
         #my_custom_player moves second:
-        elif state.ply_count ==1:
-            all_actions=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 
-            19, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 
-            40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 52, 53, 54, 55, 56, 57, 58, 
-            59, 60, 61, 62, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 78, 79, 
-            80, 81, 82, 83, 84, 85, 86, 87, 88, 91, 92, 93, 94, 95, 96, 97, 98, 
-            99, 100, 101, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
+ #       elif state.ply_count ==1:
+ #           all_actions=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 
+ #           19, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 
+ #           40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 52, 53, 54, 55, 56, 57, 58, 
+ #           59, 60, 61, 62, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 78, 79, 
+ #           80, 81, 82, 83, 84, 85, 86, 87, 88, 91, 92, 93, 94, 95, 96, 97, 98, 
+ #           99, 100, 101, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
 
             #map to use against opponent's first move:
             move_map={
@@ -63,40 +66,19 @@ class CustomPlayer(DataPlayer):
             78:66,	79:67,	80:68,	81:69,	82:70,	83:69,	84:70,	85:71,	86:72,	87:73,	88:74,
             91:79,	92:80,	93:81,	94:82,	95:83,	96:82,	97:83,	98:84,	99:85,	100:86,	101:87,
             104:92,	105:93,	106:94,	107:95,	108:96,	109:97,	110:98,	111:97,	112:98,	113:99,	114:100
-            }
-
-            #gives the used square
-            opp_move_1= list(set(all_actions)^set(state.actions()))
-            my_move_1=move_map[opp_move_1[0]]
-            
-            self.queue.put(my_move_1)
-
-        #progressively go deeper as the number of state options is reduced.    
-#        elif state.ply_count >65:
-#            self.queue.put(self.alpha_beta_search(state, depth=5))
-
-#        elif state.ply_count >50 and state.ply_count<=65:
-#            self.queue.put(self.alpha_beta_search(state, depth=4))
-
-#        else:
-#            self.queue.put(self.alpha_beta_search(state, depth=3))
-      
+            }    
         else:
-            if state.ply_count >65:
-                depth_limit=5
-
-            elif state.ply_count >50 and state.ply_count<=65:
-                depth_limit=5
-
-            elif state.ply_count >1 and state.ply_count<=50:
-                depth_limit=4    
-
-            d = 1
-            while(True):
-                for d in range(1,depth_limit,1):
-                    print(d)
-                    self.queue.put(self.alpha_beta_search(state, depth_limit))
-        #        d += 1
+            depth_limit=10
+            search_best_score=float(-10)
+            search_best_move=None
+            for d in range (3,depth_limit+1,1):
+                best_score,best_move=self.alpha_beta_search(state,d)
+                search_best_move=best_move
+#                print('move number', state.ply_count, 'best move', search_best_move)
+                if best_score>search_best_score:
+                    search_best_score =best_score
+                    search_best_move=best_move
+                self.queue.put(search_best_move)
 
     def alpha_beta_search(self, state, depth):
 
@@ -133,7 +115,7 @@ class CustomPlayer(DataPlayer):
             if v>=best_score:
                 best_score=v
                 best_move=a
-        return best_move
+        return best_score, best_move
 
     def score(self, state):
         own_loc = state.locs[self.player_id]
