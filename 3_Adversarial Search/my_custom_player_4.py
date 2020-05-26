@@ -3,7 +3,7 @@ from isolation import DebugState
 from sample_players import DataPlayer
 import random
 
-class CustomPlayer(DataPlayer):
+class CustomPlayer_4(DataPlayer):
     """ Implement your own agent to play knight's Isolation
 
     The get_action() method is the only required method for this project.
@@ -39,7 +39,11 @@ class CustomPlayer(DataPlayer):
         # return the optimal alpha_beta minimax search move at a variable 
         # depth plies using minimax with alpha-beta pruning and first best move.
         
-        if state.ply_count<2:
+        #my_custom_player moves first:
+        if state.ply_count ==0:
+            self.queue.put(5)
+
+        if state.ply_count==1:
             self.queue.put(random.choice(state.actions()))
         else:
             depth=3

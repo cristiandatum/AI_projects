@@ -14,6 +14,16 @@ from multiprocessing.pool import ThreadPool as Pool
 from isolation import Isolation, Agent, play
 from sample_players import RandomPlayer, GreedyPlayer, MinimaxPlayer
 from my_custom_player import CustomPlayer
+from my_custom_player_0 import CustomPlayer_0
+from my_custom_player_1 import CustomPlayer_1
+from my_custom_player_2 import CustomPlayer_2
+from my_custom_player_3 import CustomPlayer_3
+from my_custom_player_4 import CustomPlayer_4
+from my_custom_player_5 import CustomPlayer_5
+from my_custom_player_6 import CustomPlayer_6
+from my_custom_player_7 import CustomPlayer_7
+from my_custom_player_8 import CustomPlayer_8
+from my_custom_player_9 import CustomPlayer_9
 
 logger = logging.getLogger(__name__)
 
@@ -104,15 +114,22 @@ def play_matches(custom_agent, test_agent, cli_args):
 
 
 def main(args):
-    test_agent = TEST_AGENTS[args.opponent.upper()]
-    custom_agent = Agent(CustomPlayer, "Custom Agent")
-    wins, num_games = play_matches(custom_agent, test_agent, args)
 
-    logger.info("Your agent won {:.1f}% of matches against {}".format(
-       100. * wins / num_games, test_agent.name))
-    print("Your agent won {:.1f}% of matches against {}".format(
-       100. * wins / num_games, test_agent.name))
-    print()
+    custom_agent_combos=[CustomPlayer_0,CustomPlayer_1,CustomPlayer_2]#,CustomPlayer_3,
+#    CustomPlayer_4,CustomPlayer_5,CustomPlayer_6,CustomPlayer_7,CustomPlayer_8,
+#    CustomPlayer_9]
+
+    for combo in custom_agent_combos:
+        test_agent = TEST_AGENTS[args.opponent.upper()]
+        custom_agent = Agent(combo, "Custom Agent")
+        print()
+        print('Custom Agent: ', combo.__name__)
+        wins, num_games = play_matches(custom_agent, test_agent, args)    
+        logger.info("Your agent won {:.1f}% of matches against {}".format(
+        100. * wins / num_games, test_agent.name))
+        print("Your agent won {:.1f}% of matches against {}".format(
+        100. * wins / num_games, test_agent.name))
+        print()
 
 
 if __name__ == "__main__":

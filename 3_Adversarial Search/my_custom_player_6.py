@@ -3,7 +3,7 @@ from isolation import DebugState
 from sample_players import DataPlayer
 import random
 
-class CustomPlayer(DataPlayer):
+class CustomPlayer_6(DataPlayer):
     """ Implement your own agent to play knight's Isolation
 
     The get_action() method is the only required method for this project.
@@ -39,22 +39,57 @@ class CustomPlayer(DataPlayer):
         # return the optimal alpha_beta minimax search move at a variable 
         # depth plies using minimax with alpha-beta pruning and first best move.
         
-        if state.ply_count<2:
+        if state.ply_count ==0:
             self.queue.put(random.choice(state.actions()))
+
+        elif state.ply_count ==1:
+
+            all_actions=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 
+            19, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39, 
+            40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 52, 53, 54, 55, 56, 57, 58, 
+            59, 60, 61, 62, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 78, 79, 
+            80, 81, 82, 83, 84, 85, 86, 87, 88, 91, 92, 93, 94, 95, 96, 97, 98, 
+            99, 100, 101, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114]
+
+            #map to use against opponent's first move:
+            move_map={
+            0:14,	1:15,	2:16,	3:15,	4:18,	5:17,	6:18,	7:19,	8:20,	9:21,	10:22,
+            13:27,	14:28,	15:29,	16:28,	17:31,	18:30,	19:31,	20:32,	21:33,	22:34,	23:35,
+            26:14,	27:41,	28:42,	29:43,	30:44,	31:45,	32:46,	33:45,	34:46,	35:47,	36:22,
+            39:53,	40:54,	41:55,	42:56,	43:57,	44:56,	45:57,	46:58,	47:59,	48:60,	49:61,
+            52:40,	53:67,	54:42,	55:69,	56:70,	57:71,	58:70,	59:71,	60:46,	61:47,	62:48,
+            65:53,	66:54,	67:55,	68:56,	69:57,	70:84,	71:85,	72:58,	73:59,	74:60,	75:61,
+            78:66,	79:67,	80:68,	81:69,	82:70,	83:69,	84:70,	85:71,	86:72,	87:73,	88:74,
+            91:79,	92:80,	93:81,	94:82,	95:83,	96:82,	97:83,	98:84,	99:85,	100:86,	101:87,
+            104:92,	105:93,	106:94,	107:95,	108:96,	109:97,	110:98,	111:97,	112:98,	113:99,	114:100
+            }
+            #gives the used square
+            opp_move_1= list(set(all_actions)^set(state.actions()))
+            my_move_1=move_map[opp_move_1[0]]
+            
+            self.queue.put(my_move_1)
+
         else:
             depth=3
             depth_limit=10
             search_best_score=float(-10)
             search_best_move=None
+
             best_score,best_move=self.alpha_beta_search(state,depth) 
             self.queue.put(best_move)
+
             search_best_score, search_best_move=best_score,best_move
 
             for d in range (4,depth_limit,1):
+
                 best_score,best_move=self.alpha_beta_search(state,d)
+#                search_best_move=best_move
+#                print('move number', state.ply_count, 'best move', search_best_move, 'best score', best_score)
+
                 if best_score>search_best_score:
                     search_best_score =best_score
                     search_best_move=best_move
+#                print(search_best_move, search_best_score)
                 self.queue.put(search_best_move)
 
     def alpha_beta_search(self, state, depth):

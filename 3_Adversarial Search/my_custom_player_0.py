@@ -3,7 +3,7 @@ from isolation import DebugState
 from sample_players import DataPlayer
 import random
 
-class CustomPlayer(DataPlayer):
+class CustomPlayer_0(DataPlayer):
     """ Implement your own agent to play knight's Isolation
 
     The get_action() method is the only required method for this project.
