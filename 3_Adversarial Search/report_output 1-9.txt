@@ -1,0 +1,60 @@
+
+Custom Agent:  CustomPlayer_0
+Running 100 games:
+-++-+++++-++-++--+-+----+-+-+--+-++++-+----++-+--+-+-+-+--+-+++--+---+++--++-----+---+-++-++-++--+-+
+Your agent won 49.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_1
+Running 100 games:
+---++---+++--+--+---+---+-+-----+-+--++---++++-++-+-+++-+-++-+++++----++++++-+--+-----++--+-+-------
+Your agent won 44.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_2
+Running 100 games:
+-+---+---+-+----+--++--++----++--++--+-++--+++---+-+-+++-+---+-++--+-+-+++++-++--+++-+++--++-++-++-+
+Your agent won 50.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_3
+Running 100 games:
+-+-+-+---++--+--++----+-++-+-+---+-+----+++----+-+--+-+++---+--+--+------++++---+----+++-+-+-+++++++
+Your agent won 44.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_4
+Running 100 games:
+---+--++-+---++-+++-++--++++-+-++-+-+-++--++++++++--++-+++-+-------++-+++++--+----+-++--++++----+-+-
+Your agent won 53.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_5
+Running 100 games:
++--+++++--++-++-+++-+-+++----+--++----++---++-------++-++--+-++--+-+----++-++--+-+--++-++-+--+-++-+-
+Your agent won 48.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_6
+Running 100 games:
+--+++-------------++-+-+++-------+--+--+-+-+---+-+------++--+--+---++--+-+---++-+--+---+---------+-+
+Your agent won 31.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_7
+Running 100 games:
+-+--+-+-+-++++--++++----++++-+-+-+---+++-+--+-++-+-+-+-+--+-++-+-+++++--+---+++--+--+-+-+-++--++-++-
+Your agent won 53.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_8
+Running 100 games:
+-+-+--+-++-+---+---+-+-++-++-+--++-++-+++-+++--+----+-+--+---+---++++-+-+++++---------+-++-+++++---+
+Your agent won 48.0% of matches against Minimax Agent
+
+
+Custom Agent:  CustomPlayer_9
+Running 100 games:
++---++++---++-----+++---++----++-+--+-++++-+--++-+--+++++--+--+-++-+---++--+-+++-+-+-----+--+-++---+
+Your agent won 47.0% of matches against Minimax Agent
+

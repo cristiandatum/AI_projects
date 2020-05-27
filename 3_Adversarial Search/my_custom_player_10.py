@@ -3,7 +3,7 @@ from isolation import DebugState
 from sample_players import DataPlayer
 import random
 
-class CustomPlayer(DataPlayer):
+class CustomPlayer_10(DataPlayer):
     """ Implement your own agent to play knight's Isolation
 
     The get_action() method is the only required method for this project.
@@ -74,15 +74,22 @@ class CustomPlayer(DataPlayer):
             depth_limit=10
             search_best_score=float(-10)
             search_best_move=None
+
             best_score,best_move=self.alpha_beta_search(state,depth) 
             self.queue.put(best_move)
+
             search_best_score, search_best_move=best_score,best_move
 
             for d in range (4,depth_limit,1):
+
                 best_score,best_move=self.alpha_beta_search(state,d)
+#                search_best_move=best_move
+#                print('move number', state.ply_count, 'best move', search_best_move, 'best score', best_score)
+
                 if best_score>search_best_score:
                     search_best_score =best_score
                     search_best_move=best_move
+#                print(search_best_move, search_best_score)
                 self.queue.put(search_best_move)
 
     def alpha_beta_search(self, state, depth):
@@ -90,6 +97,7 @@ class CustomPlayer(DataPlayer):
         def _min_value(state, alpha,beta,depth):
             if state.terminal_test(): return state.utility(self.player_id)
             if depth <= 0: return self.score(state)
+
             v=float("inf")
             for a in state.actions():
                 v=min(v,_max_value(state.result(a),alpha,beta, depth-1))
