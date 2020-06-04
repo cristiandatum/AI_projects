@@ -20,6 +20,13 @@ class CustomPlayer(DataPlayer):
       any pickleable object to the self.context attribute.
     **********************************************************************
     """
+    def __init__(self, player_id):
+        self.player_id = player_id
+        self.timer = None
+        self.queue = None
+        self.context = None
+        self.data = None
+
     def get_action(self, state):
         """ Choose an action available in the current state
 
